@@ -70,7 +70,7 @@ export default function Welcome() {
                             <div className="relative rounded-lg bg-[#161615] p-6 border border-white/10 shadow-xl">
                                 <div className="flex items-center space-x-4 mb-4">
                                     <div className="h-10 w-10 rounded-full bg-[#F53003] flex items-center justify-center">
-                                        <span className="text-white font-medium">JD</span>
+                                        <span className="text-white font-medium">DS</span>
                                     </div>
                                     <div>
                                         <p className="text-sm text-gray-400">Character: Detective Sarah</p>
@@ -85,7 +85,7 @@ export default function Welcome() {
 
                                 <div className="flex items-center space-x-4 mb-4">
                                     <div className="h-10 w-10 rounded-full bg-[#3b82f6] flex items-center justify-center">
-                                        <span className="text-white font-medium">MT</span>
+                                        <span className="text-white font-medium">JM</span>
                                     </div>
                                     <div>
                                         <p className="text-sm text-gray-400">Character: John Miller</p>
