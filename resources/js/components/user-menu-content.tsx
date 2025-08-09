@@ -3,6 +3,7 @@ import { UserInfo } from '@/components/user-info';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
 import { type User } from '@/types';
 import { usePage } from '@inertiajs/react';
+import { useI18n } from '@/lib/i18n';
 import { Link, router } from '@inertiajs/react';
 import { LogOut, Settings, Check } from 'lucide-react';
 
@@ -12,6 +13,7 @@ interface UserMenuContentProps {
 
 export function UserMenuContent({ user }: UserMenuContentProps) {
     const cleanup = useMobileNavigation();
+    const { t } = useI18n();
     const { available_locales: availableLocales = [], locale: currentLocale = 'en' } =
         (usePage().props as { available_locales?: string[]; locale?: string });
 
@@ -32,7 +34,7 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
                 <DropdownMenuItem asChild>
                     <Link className="block w-full" href={route('profile.edit')} as="button" prefetch onClick={cleanup}>
                         <Settings className="mr-2" />
-                        Settings
+                        {t('common.settings', 'Settings')}
                     </Link>
                 </DropdownMenuItem>
             </DropdownMenuGroup>
@@ -40,13 +42,13 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
             <DropdownMenuItem asChild>
                 <Link className="block w-full" method="post" href={route('logout')} as="button" onClick={handleLogout}>
                     <LogOut className="mr-2" />
-                    Log out
+                    {t('common.logout', 'Log out')}
                 </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuSub>
                 <DropdownMenuSubTrigger>
-                    <span className="mr-2">Language</span>
+                    <span className="mr-2">{t('common.language', 'Language')}</span>
                     <span className="ml-auto text-xs opacity-70">{currentLocale.toUpperCase()}</span>
                 </DropdownMenuSubTrigger>
                 <DropdownMenuSubContent>
