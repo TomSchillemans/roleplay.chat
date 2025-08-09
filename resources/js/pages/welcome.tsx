@@ -1,12 +1,11 @@
 import { type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { useTranslations } from '@/hooks/useTranslations';
-import { Fragment } from 'react';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { GlobeAltIcon } from '@heroicons/react/24/outline';
 
 export default function Welcome() {
-    const { auth, ziggy, locale: currentLocaleFromProps } = usePage<SharedData & { locale: string }>().props;
+    const { auth, locale: currentLocaleFromProps } = usePage<SharedData & { locale: string }>().props;
     const { t } = useTranslations();
 
     const currentLocale = currentLocaleFromProps || 'en';
