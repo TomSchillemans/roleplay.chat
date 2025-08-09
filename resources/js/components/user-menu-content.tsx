@@ -14,8 +14,8 @@ interface UserMenuContentProps {
 export function UserMenuContent({ user }: UserMenuContentProps) {
     const cleanup = useMobileNavigation();
     const { t } = useI18n();
-    const { available_locales: availableLocales = [], locale: currentLocale = 'en' } =
-        (usePage().props as { available_locales?: string[]; locale?: string });
+    const { available_locales: availableLocales = [], available_locale_names: availableLocaleNames = {}, locale: currentLocale = 'en' } =
+        (usePage().props as { available_locales?: string[]; available_locale_names?: Record<string, string>; locale?: string });
 
     const handleLogout = () => {
         cleanup();
@@ -49,7 +49,7 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
             <DropdownMenuSub>
                 <DropdownMenuSubTrigger>
                     <span className="mr-2">{t('common.language', 'Language')}</span>
-                    <span className="ml-auto text-xs opacity-70">{currentLocale.toUpperCase()}</span>
+                    <span className="ml-auto text-xs opacity-70">{availableLocaleNames[currentLocale] ?? currentLocale.toUpperCase()}</span>
                 </DropdownMenuSubTrigger>
                 <DropdownMenuSubContent>
                     {availableLocales.map((loc: string) => (
@@ -60,7 +60,7 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
                                 as="button"
                                 onClick={cleanup}
                             >
-                                {loc.toUpperCase()}
+                                {availableLocaleNames[loc] ?? loc.toUpperCase()}
                                 {loc === currentLocale && <Check className="ml-auto size-4" />}
                             </Link>
                         </DropdownMenuItem>

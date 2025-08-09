@@ -27,6 +27,30 @@ class LocalizationService
     }
 
     /**
+     * Get locale display names from each locale's common.php (key: 'language_name').
+     * Fallback to uppercased code when missing.
+     *
+     * @return array<string, string>
+     */
+    public function getLocaleDisplayNames(): array
+    {
+        $locales = $this->getAvailableLocales();
+        $result = [];
+        foreach ($locales as $locale) {
+            $name = null;
+            $commonPath = lang_path($locale . DIRECTORY_SEPARATOR . 'common.php');
+            if (file_exists($commonPath)) {
+                $arr = require $commonPath;
+                if (is_array($arr) && isset($arr['language_name']) && is_string($arr['language_name'])) {
+                    $name = $arr['language_name'];
+                }
+            }
+            $result[$locale] = $name ?: strtoupper($locale);
+        }
+        return $result;
+    }
+
+    /**
      * Validate the locale format (e.g., 'en', 'en_US').
      *
      * @param string $locale
