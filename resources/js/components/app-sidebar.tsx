@@ -4,16 +4,11 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
+import { useI18n } from '@/lib/i18n';
 import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
 import AppLogo from './app-logo';
 
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: '/dashboard',
-        icon: LayoutGrid,
-    },
-];
+// mainNavItems moved inside component to use translations
 
 const footerNavItems: NavItem[] = [
     {
@@ -29,6 +24,14 @@ const footerNavItems: NavItem[] = [
 ];
 
 export function AppSidebar() {
+    const { t } = useI18n();
+    const mainNavItems: NavItem[] = [
+        {
+            title: t('dashboard.title', 'Dashboard'),
+            href: '/dashboard',
+            icon: LayoutGrid,
+        },
+    ];
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>

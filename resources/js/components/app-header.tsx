@@ -11,17 +11,12 @@ import { useInitials } from '@/hooks/use-initials';
 import { cn } from '@/lib/utils';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
+import { useI18n } from '@/lib/i18n';
 import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
 
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: '/dashboard',
-        icon: LayoutGrid,
-    },
-];
+// mainNavItems moved inside component to use translations
 
 const rightNavItems: NavItem[] = [
     {
@@ -43,6 +38,14 @@ interface AppHeaderProps {
 }
 
 export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
+    const { t } = useI18n();
+    const mainNavItems: NavItem[] = [
+        {
+            title: t('dashboard.title', 'Dashboard'),
+            href: '/dashboard',
+            icon: LayoutGrid,
+        },
+    ];
     const page = usePage<SharedData>();
     const { auth } = page.props;
     const getInitials = useInitials();

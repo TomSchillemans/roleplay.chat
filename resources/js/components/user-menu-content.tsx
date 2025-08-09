@@ -2,8 +2,9 @@ import { DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSep
 import { UserInfo } from '@/components/user-info';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
 import { type User } from '@/types';
+import { usePage } from '@inertiajs/react';
 import { Link, router } from '@inertiajs/react';
-import { LogOut, Settings } from 'lucide-react';
+import { LogOut, Settings, Check } from 'lucide-react';
 
 interface UserMenuContentProps {
     user: User;
@@ -11,6 +12,8 @@ interface UserMenuContentProps {
 
 export function UserMenuContent({ user }: UserMenuContentProps) {
     const cleanup = useMobileNavigation();
+    const { available_locales: availableLocales = [], locale: currentLocale = 'en' } =
+        (usePage().props as { available_locales?: string[]; locale?: string });
 
     const handleLogout = () => {
         cleanup();
@@ -40,6 +43,20 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
                     Log out
                 </Link>
             </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            {availableLocales.map((loc: string) => (
+                <DropdownMenuItem asChild key={loc} disabled={loc === currentLocale}>
+                    <Link
+                        className="w-full flex items-center capitalize"
+                        href={route('language.switch', loc)}
+                        as="button"
+                        onClick={cleanup}
+                    >
+                        {loc}
+                        {loc === currentLocale && <Check className="ml-auto size-4" />}
+                    </Link>
+                </DropdownMenuItem>
+            ))}
         </>
     );
 }
