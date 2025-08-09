@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
+use App\Services\LocalizationService;
 
 class SetLocaleFromBrowser
 {
@@ -18,7 +19,8 @@ class SetLocaleFromBrowser
      */
     public function handle(Request $request, Closure $next)
     {
-        $supportedLocales = ['en', 'de', 'fr', 'es'];
+        $localizationService = app(LocalizationService::class);
+        $supportedLocales = $localizationService->getAvailableLocales();
         $defaultLocale = 'en'; // Your default locale
 
         if (Session::has('locale') && in_array(Session::get('locale'), $supportedLocales)) {

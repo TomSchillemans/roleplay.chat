@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\App;
+use App\Services\LocalizationService;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -10,7 +11,10 @@ Route::get('/', function () {
 
 // Language Switcher Route
 Route::get('/language/{locale}', function ($locale) {
-    if (in_array($locale, ['en', 'de', 'fr', 'es'])) {
+    $localizationService = new LocalizationService();
+    $availableLocales = $localizationService->getAvailableLocales();
+    
+    if (in_array($locale, $availableLocales)) {
         session(['locale' => $locale]);
         App::setLocale($locale); // Set locale for the current request
     }
