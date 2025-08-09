@@ -1,9 +1,11 @@
-import { DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
+import { DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger } from '@/components/ui/dropdown-menu';
 import { UserInfo } from '@/components/user-info';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
 import { type User } from '@/types';
+import { usePage } from '@inertiajs/react';
+import { useI18n } from '@/lib/i18n';
 import { Link, router } from '@inertiajs/react';
-import { LogOut, Settings } from 'lucide-react';
+import { LogOut, Settings, Check } from 'lucide-react';
 
 interface UserMenuContentProps {
     user: User;
@@ -11,6 +13,9 @@ interface UserMenuContentProps {
 
 export function UserMenuContent({ user }: UserMenuContentProps) {
     const cleanup = useMobileNavigation();
+    const { t } = useI18n();
+    const { available_locales: availableLocales = [], available_locale_names: availableLocaleNames = {}, locale: currentLocale = 'en' } =
+        (usePage().props as { available_locales?: string[]; available_locale_names?: Record<string, string>; locale?: string });
 
     const handleLogout = () => {
         cleanup();
@@ -29,7 +34,7 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
                 <DropdownMenuItem asChild>
                     <Link className="block w-full" href={route('profile.edit')} as="button" prefetch onClick={cleanup}>
                         <Settings className="mr-2" />
-                        Settings
+                        {t('common.settings', 'Settings')}
                     </Link>
                 </DropdownMenuItem>
             </DropdownMenuGroup>
@@ -37,9 +42,31 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
             <DropdownMenuItem asChild>
                 <Link className="block w-full" method="post" href={route('logout')} as="button" onClick={handleLogout}>
                     <LogOut className="mr-2" />
-                    Log out
+                    {t('common.logout', 'Log out')}
                 </Link>
             </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                    <span className="mr-2">{t('common.language', 'Language')}</span>
+                    <span className="ml-auto text-xs opacity-70">{availableLocaleNames[currentLocale] ?? currentLocale.toUpperCase()}</span>
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                    {availableLocales.map((loc: string) => (
+                        <DropdownMenuItem asChild key={loc} disabled={loc === currentLocale}>
+                            <Link
+                                className="w-full flex items-center"
+                                href={route('language.switch', loc)}
+                                as="button"
+                                onClick={cleanup}
+                            >
+                                {availableLocaleNames[loc] ?? loc.toUpperCase()}
+                                {loc === currentLocale && <Check className="ml-auto size-4" />}
+                            </Link>
+                        </DropdownMenuItem>
+                    ))}
+                </DropdownMenuSubContent>
+            </DropdownMenuSub>
         </>
     );
 }
