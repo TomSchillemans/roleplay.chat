@@ -1,4 +1,4 @@
-import { DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
+import { DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger } from '@/components/ui/dropdown-menu';
 import { UserInfo } from '@/components/user-info';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
 import { type User } from '@/types';
@@ -44,19 +44,27 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
                 </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            {availableLocales.map((loc: string) => (
-                <DropdownMenuItem asChild key={loc} disabled={loc === currentLocale}>
-                    <Link
-                        className="w-full flex items-center capitalize"
-                        href={route('language.switch', loc)}
-                        as="button"
-                        onClick={cleanup}
-                    >
-                        {loc}
-                        {loc === currentLocale && <Check className="ml-auto size-4" />}
-                    </Link>
-                </DropdownMenuItem>
-            ))}
+            <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                    <span className="mr-2">Language</span>
+                    <span className="ml-auto text-xs opacity-70">{currentLocale.toUpperCase()}</span>
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                    {availableLocales.map((loc: string) => (
+                        <DropdownMenuItem asChild key={loc} disabled={loc === currentLocale}>
+                            <Link
+                                className="w-full flex items-center"
+                                href={route('language.switch', loc)}
+                                as="button"
+                                onClick={cleanup}
+                            >
+                                {loc.toUpperCase()}
+                                {loc === currentLocale && <Check className="ml-auto size-4" />}
+                            </Link>
+                        </DropdownMenuItem>
+                    ))}
+                </DropdownMenuSubContent>
+            </DropdownMenuSub>
         </>
     );
 }
